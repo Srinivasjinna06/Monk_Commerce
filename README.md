@@ -12,6 +12,25 @@ This project implements a RESTful API for managing and applying different types 
 4. Access the H2 database console at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`, User: `sa`, Password: blank).
 5. Test APIs using Postman or curl (see API Details below).
 
+## 🛠 Technical Architecture & Design Patterns
+
+This project follows **Domain-Driven Design (DDD)** principles and utilizes several key patterns to ensure a production-ready codebase:
+
+* **Strategy Pattern (via JPA Inheritance):** Implemented the `SINGLE_TABLE` inheritance strategy for the `Coupon` entity. This makes the system **Open-Closed**; new coupon types (like Category-wise or Flash Sales) can be added by creating a new class without modifying existing database schemas or complex joins.
+* **Global Exception Handling:** Centralized error management using `@ControllerAdvice` to provide meaningful API feedback and consistent HTTP status codes.
+* **Service Layer Isolation:** Encapsulated complex discount logic within the Service layer, keeping Controllers thin and ensuring high maintainability.
+
+
+## 🚀 API Reference
+
+| Method | Endpoint | Description | Key Feature |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/coupons` | Create Coupon | Single-table persistence |
+| `GET` | `/coupons` | List All | Metadata retrieval |
+| `POST` | `/applicable-coupons` | Analysis | Dynamic cart evaluation |
+| `POST` | `/apply-coupon/{id}` | Execution | Real-time price calculation |
+
+
 ## API Details
 
 ### 1. POST /coupons
@@ -253,6 +272,15 @@ Request Body (e.g., for coupon ID 1):
 - BxGy: Buy X of certain products, get Y free with a repetition limit (e.g., buy 2 of 1 and 1 of 2,  get 1 of 1 free).
 - Bulk Creation: Add multiple coupons efficiently.
 - Update Flexibility: Update all fields of existing coupons.
+
+## 🧠 Logic Breakdown: BxGy (Buy X Get Y)
+
+The BxGy implementation handles sophisticated retail scenarios that go beyond basic discounts:
+
+* **Repetition Limit:** Prevents "revenue leakage" by capping how many times a deal can apply (e.g., "Buy 1 Get 1" valid only for the first 3 pairs).
+* **Smart Selection:** The algorithm automatically identifies the **lowest-priced qualifying items** to mark as "Free," ensuring business margins are protected while delivering value to the customer.
+* **Atomic Eligibility:** The system performs a dual-check on both "Buy" requirements and "Get" availability before applying any discount.
+
 
 ### Unimplemented Use Cases:
 
