@@ -31,6 +31,16 @@ This project follows **Domain-Driven Design (DDD)** principles and utilizes seve
 | `POST` | `/apply-coupon/{id}` | Execution | Real-time price calculation |
 
 
+## 🧠 Logic Breakdown: BxGy (Buy X Get Y)
+
+The BxGy implementation handles sophisticated retail scenarios that go beyond basic discounts:
+
+* **Repetition Limit:** Prevents "revenue leakage" by capping how many times a deal can apply (e.g., "Buy 1 Get 1" valid only for the first 3 pairs).
+* **Smart Selection:** The algorithm automatically identifies the **lowest-priced qualifying items** to mark as "Free," ensuring business margins are protected while delivering value to the customer.
+* **Atomic Eligibility:** The system performs a dual-check on both "Buy" requirements and "Get" availability before applying any discount.
+
+
+
 ## API Details
 
 ### 1. POST /coupons
@@ -272,15 +282,6 @@ Request Body (e.g., for coupon ID 1):
 - BxGy: Buy X of certain products, get Y free with a repetition limit (e.g., buy 2 of 1 and 1 of 2,  get 1 of 1 free).
 - Bulk Creation: Add multiple coupons efficiently.
 - Update Flexibility: Update all fields of existing coupons.
-
-## 🧠 Logic Breakdown: BxGy (Buy X Get Y)
-
-The BxGy implementation handles sophisticated retail scenarios that go beyond basic discounts:
-
-* **Repetition Limit:** Prevents "revenue leakage" by capping how many times a deal can apply (e.g., "Buy 1 Get 1" valid only for the first 3 pairs).
-* **Smart Selection:** The algorithm automatically identifies the **lowest-priced qualifying items** to mark as "Free," ensuring business margins are protected while delivering value to the customer.
-* **Atomic Eligibility:** The system performs a dual-check on both "Buy" requirements and "Get" availability before applying any discount.
-
 
 ### Unimplemented Use Cases:
 
