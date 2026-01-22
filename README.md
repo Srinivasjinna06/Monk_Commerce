@@ -1,4 +1,4 @@
-# Monk Commerce - Coupons Management API
+# E-Commerce - Coupons Management API
 
 This project implements a RESTful API for managing and applying different types of discount coupons (cart-wise, product-wise, and BxGy) for an e-commerce platform. The design is extensible to support future coupon types using an abstract `Coupon` class with single-table inheritance.
 
